@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Dino Deck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a class="back-btn" href="../index.html"
+            onclick="return S.scr!='play' || confirm('Leave this run? Your progress will be lost.')">← Menu</a>
+        <h1>Extinction Odds</h1>
+        <p class="dim">A roguelike card game powered by the DinoBase API</p>
+    </header>
+
+    <main id="app">
+
+        <!-- MAIN MENU -->
+        <section id="menu" class="screen">
+            <div class="menu">
+                <div>
+                    <h2>Place your creatures. Beat the blind.</h2>
+                    <nav>
+                        <button id="newRunBtn" class="pri" onclick="A.go('deck')" disabled>New Run</button>
+                        <button id="collectionBtn" onclick="A.go('col')" disabled>Collection</button>
+                        <button onclick="A.go('how')">How to Play</button>
+                    </nav>
+                    <p class="dim" style="margin-top:24px">
+                        <span id="apiDot" class="dot loading"></span><span id="apiText">Connecting to DinoBase...</span>
+                        <button id="retryBtn" class="lnk" onclick="A.reload()" hidden>Retry</button>
+                    </p>
+                </div>
+                <div id="menuFan" class="fan"></div>
+            </div>
+        </section>
+
+        <!-- STARTING DECK -->
+        <section id="deck" class="screen" hidden>
+            <div class="top">
+                <div>
+                    <div class="dim">New run</div>
+                    <h2>Choose your starting deck</h2>
+                    <div class="dim">Tap <span data-c="DECK_SIZE"></span> creatures to add them. Reroll replaces all 12 cards, and the same creature can show up more than once.</div>
+                </div>
+                <div style="display:flex;gap:16px;align-items:center">
+                    <button id="rerollBtn" onclick="A.reroll()">Reroll</button>
+                    <div class="stat"><span class="dim">Picked</span><b id="pickedCount" class="gold">0</b></div>
+                </div>
+            </div>
+            <div id="offerList" class="row six mid"></div>
+            <div class="bar">
+                <button onclick="A.go('menu')">Back</button>
+                <div id="pickedChips" class="chips"></div>
+                <button id="startBtn" class="pri" onclick="A.start()" disabled>Start Run</button>
+            </div>
+        </section>
+
+        <!-- PLAY -->
+        <section id="play" class="screen" hidden>
+            <div class="top">
+                <div>
+                    <div id="playKicker" class="dim"></div>
+                    <h2 id="blindName"></h2>
+                </div>
+                <div style="display:flex;gap:26px">
+                    <div class="stat"><span class="dim">Score to beat</span><b id="target" class="gold"></b></div>
+                    <div class="stat"><span class="dim">Your score</span><b id="yourScore"></b></div>
+                </div>
+            </div>
+
+            <div id="slots" class="row mid"></div>
+            <div id="preview" class="dim" style="min-height:22px"></div>
+            <div id="handLabel" class="lbl"></div>
+            <div id="hand" class="row" style="padding-top:12px"></div>
+
+            <div id="resultBox" class="result" hidden>
+                <span id="resultText"></span>
+                <div style="display:flex;gap:12px">
+                    <button id="retryBlindBtn" class="pri" onclick="A.retry()">Retry blind</button>
+                    <button id="quitLostBtn" class="dg" onclick="A.quit()">Quit run</button>
+                </div>
+            </div>
+            <div id="rewardBox" hidden></div>
+            <div id="doneBox" class="result gold" hidden>Act 2 cleared. That is the end of this mockup run.</div>
+
+            <div class="bar">
+                <div class="deck">
+                    <button class="deckbtn" onclick="A.vw('draw')" aria-label="View cards left in deck"><span class="stack"></span></button>
+                    <span id="deckInfo" class="dim"></span>
+                </div>
+                <div id="normalBtns" style="display:flex;gap:12px;align-items:center">
+                    <span id="discardsLeft" class="dim"></span>
+                    <!-- Updated Discard to class="cf" -->
+                    <button id="discardBtn" class="cf" onclick="A.dmode()">Discard</button>
+                    <button id="playBtn" class="pri" onclick="A.playHand()">Play Hand</button>
+                    <!-- Quit remains class="dg" -->
+                    <button class="dg" onclick="A.askQuit(true)">Quit</button>
+                </div>
+                <div id="discardBtns" style="display:flex;gap:12px;align-items:center" hidden>
+                    <button onclick="A.dmode()">Cancel</button>
+                    <button id="confirmBtn" class="cf" onclick="A.confirm()">Confirm discard</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLLECTION -->
+        <section id="col" class="screen" hidden>
+            <div class="top">
+                <div>
+                    <div class="dim"><span id="colTotal"></span> creatures from DinoBase</div>
+                    <h2>Collection</h2>
+                </div>
+                <button onclick="A.go('menu')">Back</button>
+            </div>
+            <h3 class="serif">Legendary (<span id="colCountL"></span>)</h3><div id="colL" class="row six"></div>
+            <h3 class="serif">Rare (<span id="colCountR"></span>)</h3><div id="colR" class="row six"></div>
+            <h3 class="serif">Uncommon (<span id="colCountU"></span>)</h3><div id="colU" class="row six"></div>
+            <h3 class="serif">Common (<span id="colCountC"></span>)</h3><div id="colC" class="row six"></div>
+            <p class="dim note">Omnivores read Carnivore and Herbivore neighbors, but Carnivore and Herbivore checks never count Omnivores.</p>
+        </section>
+
+        <!-- HOW TO PLAY -->
+        <section id="how" class="screen" hidden>
+            <div class="top">
+                <div>
+                    <div class="dim">Rules</div>
+                    <h2>How to Play</h2>
+                </div>
+                <button onclick="A.go('menu')">Back</button>
+            </div>
+            <div class="rules">
+                <p><b>Goal.</b> Reach the score to beat before you run out of plays. Each act has 3 blinds and a final blind, and there are 2 acts.</p>
+                <p><b>Your hand.</b> You hold <span data-c="HAND"></span> creatures. Tap them in the order you want them placed, left to right. The first tap is slot 1.</p>
+                <p><b>Effects.</b> Each card has a Habitat, a Diet and an effect. Effects look at neighbors (left, right, both, or 2 cards away), at being placed first or last, or at the whole row. They give +score or +mult.</p>
+                <p><b>Scoring.</b> Row total = (card scores + bonus score) × (1 + mult).</p>
+                <p><b>Plays.</b> A blind gives you <span data-c="PLAYS"></span> plays, and a final blind gives <span data-c="FINAL_PLAYS"></span>. After each play your whole deck is reshuffled and you get a new hand. Your play totals add up.</p>
+                <p><b>Discards.</b> You have <span data-c="DISCARDS"></span> discards per blind. Tap cards to mark them, then confirm to draw the same number. You can only discard as many cards as are left in the deck to draw.</p>
+                <p><b>Rewards.</b> Beat a blind to pick 1 of 3 cards to add to your deck. Beat a final blind to pick 3 of 5, with Uncommon as the lowest rarity. You can reroll a reward <span data-c="REWARD_REROLLS"></span> time.</p>
+                <p><b>Diets.</b> Carnivore and Herbivore are opposites. Omnivores trigger off either, but never count for Carnivore or Herbivore checks.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- DECK MODAL -->
+    <div id="deckModal" class="modal" hidden onclick="if(event.target===this)A.vw(null)">
+        <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="top">
+                <h2 id="modalTitle"></h2>
+                <div style="display:flex;gap:8px">
+                    <button id="tabDraw" onclick="A.vw('draw')"></button>
+                    <button id="tabFull" onclick="A.vw('full')"></button>
+                    <button onclick="A.vw(null)" aria-label="Close">Close</button>
+                </div>
+            </div>
+            <div class="dim" style="margin:6px 0 16px">Sorted by rarity, not by draw order.</div>
+            <div id="modalCards" class="row six"></div>
+        </div>
+    </div>
+
+    <!-- QUIT WARNING MODAL -->
+    <div id="quitModal" class="modal" hidden onclick="if(event.target===this)A.askQuit(false)">
+        <div class="mbox" style="max-width:460px" role="alertdialog" aria-modal="true" aria-labelledby="quitTitle">
+            <h2 id="quitTitle">Quit this run?</h2>
+            <p>Quitting removes your progress. Your deck, cleared blinds and rewards will be lost, and you will go back to the main menu.</p>
+            <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+                <button onclick="A.askQuit(false)">Keep playing</button>
+                <!-- Updated Quit in modal to class="dg" -->
+                <button class="dg" onclick="A.quit()">Quit run</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="dim">Data provided by the DinoBase API</p>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>

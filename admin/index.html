@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bonebed - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="back" href="../index.html">&larr; Menu</a>
+        <h1>The Bonebed Admin</h1>
+        <button id="logoutBtn" class="ghost" hidden>Log out</button>
+    </header>
+    <div class="strata" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+
+    <main>
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <!-- LOGIN -->
+        <section id="loginPanel" class="card login-card">
+            <h2>Admin login</h2>
+            <p class="hint">Enter the admin key to manage dinosaur records.</p>
+            <form id="loginForm">
+                <label for="keyInput">Admin key</label>
+                <div class="password-field">
+                    <input type="password" id="keyInput" autocomplete="off" required>
+                    <button type="button" id="togglePw" class="ghost small" aria-label="Show key" aria-pressed="false">Show</button>
+                </div>
+                <button type="submit" id="loginBtn" class="wide">Log in</button>
+            </form>
+        </section>
+
+        <!-- ADMIN PANEL -->
+        <section id="adminPanel" hidden>
+            <div class="panel-head">
+                <h2>Dinosaur records</h2>
+                <p id="count" class="count"></p>
+            </div>
+
+            <div class="toolbar">
+                <input type="search" id="searchInput" placeholder="Search by name, period, diet..." aria-label="Search records">
+                <button id="searchBtn">Search</button>
+                <button id="showAllBtn" class="ghost">Show all</button>
+                <button id="addBtn" class="accent">+ Add dinosaur</button>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Period</th><th>Diet</th><th>Habitat</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="rows"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- ADD / EDIT FORM -->
+    <dialog id="formDialog">
+        <form id="recordForm">
+            <h2 id="formTitle">Add dinosaur</h2>
+            <div id="fields" class="fields"></div>
+            <div class="actions">
+                <button type="button" id="cancelBtn" class="ghost">Cancel</button>
+                <button type="submit" id="saveBtn" class="accent">Save changes</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script src="admin.js"></script>
+</body>
+</html>

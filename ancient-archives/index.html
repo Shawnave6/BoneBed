@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ancient Archives</title>
+    <link rel="stylesheet" href="style.css" >
+</head>
+<body>
+    <header>
+        <a class="back-btn" href="../index.html">← Menu</a>
+        <h1>Ancient Archives</h1>
+        <p>A website powered by a REST API</p>
+    </header>
+    <main>
+
+        <!-- SEARCH -->
+        <section class="search">
+            <input type="text" id="searchInput" placeholder="Search for a Prehistoric Creature...">
+            <button onclick="searchDinosaurs()">Search</button>
+            <button class="secondary" onclick="loadDinosaurs()">Show All</button>
+        </section>
+
+        <section>
+            <h2>Prehistoric Beasts</h2>
+            <div id="dinosaurList" class="dino-list">
+                Loading creatures...
+            </div>
+        </section>
+    </main>
+
+    <!-- DINOSAUR MODAL -->
+    <div id="dinoModalOverlay" class="modal-overlay" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalDinoName">
+            <button class="modal-close" onclick="closeDinoModal()" aria-label="Close">&times;</button>
+            <div id="modalDinoContent"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Data provided by the DinoBase API</p>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>

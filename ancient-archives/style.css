@@ -1,0 +1,561 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+ 
+:root {
+    --ink: #0f1712;
+    --ink-deep: #0a100c;
+    --paper: #f4efe0;
+    --paper-dim: #e8dfc7;
+    --ink-text: #1c2420;
+    --muted-on-dark: #7f9788;
+    --muted-on-paper: #6b6350;
+    --amber: #c9852b;
+    --amber-light: #e3a94f;
+    --fern: #3c5a48;
+    --fern-deep: #24382a;
+    --line-on-dark: #223429;
+ 
+    /* Timescale colors */
+    --triassic: #812b92;
+    --jurassic: #34b2c9;
+    --cretaceous: #7fc64e;
+ 
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+ 
+* {
+    box-sizing: border-box;
+}
+ 
+/* Body */
+body {
+    margin: 0;
+    background-color: var(--ink);
+    background-image:
+        radial-gradient(circle, rgba(244, 239, 224, 0.045) 1px, transparent 1px);
+    background-size: 26px 26px;
+    font-family: var(--font-body);
+    color: var(--paper);
+    position: relative;
+}
+ 
+/* Watermark */
+body::before {
+    content: "";
+    position: fixed;
+    right: -60px;
+    bottom: -80px;
+    width: 420px;
+    height: 420px;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20200%20200%27%3E%3Cg%20fill%3D%27%23ffffff%27%3E%3Cellipse%20cx%3D%27100%27%20cy%3D%27142%27%20rx%3D%2734%27%20ry%3D%2744%27/%3E%3Cellipse%20cx%3D%2754%27%20cy%3D%2782%27%20rx%3D%2717%27%20ry%3D%2736%27%20transform%3D%27rotate%28-24%2054%2082%29%27/%3E%3Cellipse%20cx%3D%27100%27%20cy%3D%2758%27%20rx%3D%2717%27%20ry%3D%2738%27/%3E%3Cellipse%20cx%3D%27146%27%20cy%3D%2782%27%20rx%3D%2717%27%20ry%3D%2736%27%20transform%3D%27rotate%2824%20146%2082%29%27/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.035;
+    pointer-events: none;
+    z-index: 0;
+    transform: rotate(-8deg);
+}
+ 
+/* Header */
+header {
+    position: relative;
+    background: linear-gradient(180deg, var(--ink-deep) 0%, var(--ink) 100%);
+    color: var(--paper);
+    text-align: center;
+    padding: 56px 20px 42px;
+    border-bottom: 1px solid var(--line-on-dark);
+    overflow: hidden;
+}
+ 
+header::before {
+    content: "Field Catalog";
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 14px;
+}
+ 
+header h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 3rem;
+    letter-spacing: 0.5px;
+    color: var(--paper);
+}
+ 
+header p {
+    color: var(--muted-on-dark);
+    margin: 12px 0 0 0;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+}
+
+/* Back button */
+.back-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+    padding: 9px 16px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--amber-light);
+    text-decoration: none;
+    background: rgba(10, 16, 12, 0.6);
+    border: 1px solid var(--fern-deep);
+    border-radius: 8px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.back-btn:hover {
+    background: var(--fern-deep);
+    transform: translateY(-2px);
+}
+
+.back-btn:focus-visible {
+    outline: 2px solid var(--amber-light);
+    outline-offset: 2px;
+}
+ 
+/* Main */
+main {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 40px auto;
+    padding: 0 20px;
+}
+ 
+/* Search Bar */
+.search {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(15, 23, 18, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-on-dark);
+    display: flex;
+    gap: 12px;
+    padding: 20px 4px;
+    margin-bottom: 40px;
+}
+ 
+.search input {
+    flex: 1;
+    padding: 15px 18px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    background: #17221b;
+    border: 1px solid var(--line-on-dark);
+    color: var(--paper);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+ 
+.search input::placeholder {
+    color: var(--muted-on-dark);
+}
+ 
+.search input:focus {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgba(201, 133, 43, 0.18);
+}
+ 
+/* Buttons */
+button {
+    font-family: var(--font-body);
+    padding: 14px 24px;
+    border: none;
+    border-radius: 8px;
+    background: var(--amber);
+    color: #1a1206;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+ 
+button:hover {
+    background: var(--amber-light);
+    transform: translateY(-2px);
+}
+ 
+button:active {
+    transform: translateY(0);
+}
+ 
+button:focus-visible {
+    outline: 2px solid var(--amber-light);
+    outline-offset: 2px;
+}
+ 
+button.secondary {
+    background: transparent;
+    color: var(--amber-light);
+    border: 1px solid var(--fern-deep);
+}
+ 
+button.secondary:hover {
+    background: var(--fern-deep);
+}
+ 
+h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--paper);
+    border-bottom: 1px solid var(--line-on-dark);
+    padding-bottom: 12px;
+    font-size: 1.6rem;
+    letter-spacing: 0.3px;
+}
+ 
+/* Dinosaur List */
+.dino-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    counter-reset: specimen;
+}
+ 
+/* Dinosaur Card */
+.dinosaur-card {
+    position: relative;
+    counter-increment: specimen;
+    background: var(--paper);
+    color: var(--ink-text);
+    padding: 46px 24px 24px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+ 
+.dinosaur-card::before {
+    content: "No. " counter(specimen, decimal-leading-zero);
+    position: absolute;
+    top: 18px;
+    left: 24px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--amber);
+    text-transform: uppercase;
+}
+ 
+.dinosaur-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.38);
+}
+ 
+.dinosaur-name {
+    font-family: var(--font-display);
+    color: var(--ink-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    letter-spacing: 0.2px;
+}
+ 
+.scientific-name {
+    color: var(--fern);
+    font-size: 0.92rem;
+    font-style: italic;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+ 
+.dinosaur-card p {
+    color: var(--ink-text);
+    margin: 0;
+    font-size: 0.88rem;
+    font-family: var(--font-body);
+}
+ 
+.dinosaur-card p strong {
+    color: var(--muted-on-paper);
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    display: block;
+    margin-bottom: 2px;
+}
+ 
+/* Primary Detail */
+.dinosaur-card > div > p:nth-of-type(1),
+.dinosaur-card > div > p:nth-of-type(2),
+.dinosaur-card > div > p:nth-of-type(3) {
+    display: inline-flex;
+    flex-direction: column;
+    background: var(--paper-dim);
+    border-radius: 6px;
+    padding: 7px 10px;
+    margin: 0 6px 8px 0;
+}
+ 
+.dinosaur-card > div > p:nth-of-type(1) {
+    margin-top: 2px;
+}
+ 
+/* Defence Caption */
+.dinosaur-card > div > p:nth-of-type(4) {
+    font-style: italic;
+    color: var(--fern);
+    font-size: 0.85rem;
+    margin-top: 6px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(60, 90, 72, 0.35);
+}
+ 
+.dinosaur-card > div > p:nth-of-type(4) strong {
+    display: none;
+}
+ 
+.dinosaur-period {
+    display: block;
+    width: max-content;
+    margin: 0 0 10px auto;
+    background: var(--fern-deep);
+    color: var(--amber-light);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+ 
+.dinosaur-period[data-period="Triassic"] {
+    background: var(--triassic);
+    color: #f4efe0;
+}
+ 
+.dinosaur-period[data-period="Jurassic"] {
+    background: var(--jurassic);
+    color: #0a1a1e;
+}
+ 
+.dinosaur-period[data-period="Cretaceous"] {
+    background: var(--cretaceous);
+    color: #10230a;
+}
+ 
+.dinosaur-card button {
+    margin-top: 18px;
+    width: 100%;
+    padding: 12px;
+}
+ 
+/* Dino Detail Modal */
+ 
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 16, 12, 0.82);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+ 
+.modal-overlay.open {
+    display: flex;
+}
+ 
+body.modal-open {
+    overflow: hidden;
+}
+ 
+.modal-card {
+    position: relative;
+    width: 100%;
+    max-width: 540px;
+    max-height: 85vh;
+    overflow-y: auto;
+    background: var(--paper);
+    color: var(--ink-text);
+    border-radius: 14px;
+    padding: 40px 34px 34px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    animation: modalPop 0.22s ease;
+}
+ 
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+ 
+.modal-card::before {
+    content: "Field Record";
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+}
+ 
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--fern-deep);
+    color: var(--amber-light);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    line-height: 1;
+}
+ 
+.modal-close:hover {
+    background: var(--fern);
+    transform: translateY(-2px);
+}
+ 
+.modal-dino-name {
+    font-family: var(--font-display);
+    color: var(--ink-text);
+    font-size: 1.9rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    letter-spacing: 0.2px;
+    padding-right: 30px;
+}
+ 
+.modal-card .scientific-name {
+    margin-bottom: 4px;
+}
+ 
+.modal-summary {
+    margin: 18px 0;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed rgba(60, 90, 72, 0.35);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+ 
+.modal-summary p {
+    background: var(--paper-dim);
+    border-radius: 6px;
+    padding: 7px 10px;
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--ink-text);
+}
+ 
+.modal-summary p strong {
+    display: block;
+    color: var(--muted-on-paper);
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 2px;
+}
+ 
+/* Defence Caption Card */
+.modal-summary p:nth-of-type(4) {
+    background: none;
+    padding: 0;
+    flex-basis: 100%;
+    font-style: italic;
+    color: var(--fern);
+}
+ 
+.modal-summary p:nth-of-type(4) strong {
+    display: none;
+}
+ 
+.modal-facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px 20px;
+}
+ 
+.modal-fact {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+ 
+.modal-fact-label {
+    font-family: var(--font-mono);
+    color: var(--fern);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+}
+ 
+.modal-fact-value {
+    color: var(--ink-text);
+    font-size: 0.98rem;
+    font-weight: 500;
+}
+ 
+/* Footer */
+footer {
+    position: relative;
+    background: var(--ink-deep);
+    text-align: center;
+    padding: 30px;
+    color: var(--muted-on-dark);
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.4px;
+    border-top: 1px solid var(--line-on-dark);
+    margin-top: 60px;
+}
+ 
+@media (prefers-reduced-motion: reduce) {
+    .dinosaur-card,
+    button,
+    .modal-card {
+        transition: none;
+        animation: none;
+    }
+}
+ 
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 2.2rem;
+    }
+ 
+    .search {
+        flex-wrap: wrap;
+    }
+ 
+    .modal-card {
+        padding: 32px 22px 26px;
+    }
+}

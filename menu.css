@@ -1,0 +1,296 @@
+:root {
+    --tar: #2a2017;          
+    --limestone: #cdd5c9;    
+    --teal: #2c5a55;         
+    --teal-lift: #346b65;    
+    --bone: #f3ecd8;        
+    --amber: #e3a23f;        
+    --muted: #b9ad95;       
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--limestone);
+    font-family: var(--font-body);
+}
+
+/* Background illustration */
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.backdrop svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.strata-a { fill: #d4dbd0; }
+.strata-b { fill: #c3cbbf; }
+.grit     { fill: rgba(42, 32, 23, 0.16); }
+
+/* Fossil imprints */
+.fossil {
+    fill: rgba(44, 90, 85, 0.17);
+}
+
+.fossil-line {
+    fill: none;
+    stroke: rgba(44, 90, 85, 0.22);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.fossil-line.ribs {
+    stroke: rgba(44, 90, 85, 0.14);
+}
+
+/* bars */
+.bar {
+    position: relative;
+    z-index: 2;
+    background: var(--tar);
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.top-bar {
+    padding-top: calc(22px + env(safe-area-inset-top, 0px));
+    padding-bottom: 22px;
+}
+
+.top-bar h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5.5vw, 3rem);
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    color: var(--amber);
+}
+
+/* login button */
+.login-btn {
+    position: absolute;
+    right: 16px;
+    top: calc(50% + env(safe-area-inset-top, 0px) / 2);
+    transform: translateY(-50%);
+    padding: 8px 18px;
+    border: 1px solid var(--amber);
+    border-radius: 8px;
+    color: var(--amber);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.login-btn:hover {
+    background-color: var(--amber);
+    color: var(--tar);
+}
+
+.login-btn:focus-visible {
+    outline: 3px solid var(--bone);
+    outline-offset: 2px;
+}
+
+.bottom-bar {
+    padding-top: 12px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+}
+
+.bottom-bar p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+/* Wavy rock-layer */
+.edge {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    display: block;
+    fill: var(--tar);
+    pointer-events: none;
+}
+
+.edge-top {
+    top: calc(100% - 1px);
+}
+
+.edge-bottom {
+    bottom: calc(100% - 1px);
+    transform: scaleY(-1);
+}
+
+/* Menu grid */
+.menu {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: clamp(28px, 5vw, 60px) clamp(16px, 6vw, 60px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(170px, 1fr);
+    gap: clamp(14px, 3.5vw, 28px);
+}
+
+.tile-main {
+    grid-row: span 2;
+}
+
+/* Tiles */
+.tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 24px 16px;
+    color: var(--bone);
+    text-decoration: none;
+    border-radius: 14px;
+    background-color: var(--teal);
+    background-image: radial-gradient(circle at 50% 38%, rgba(243, 236, 216, 0.14), transparent 62%);
+    box-shadow:
+        inset 0 0 0 2px rgba(243, 236, 216, 0.14),
+        0 10px 22px rgba(42, 32, 23, 0.25);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tile:hover {
+    background-color: var(--teal-lift);
+    transform: translateY(-5px);
+    box-shadow:
+        inset 0 0 0 2px rgba(227, 162, 63, 0.7),
+        0 18px 32px rgba(42, 32, 23, 0.33);
+}
+
+.tile:active {
+    transform: translateY(0);
+}
+
+.tile:focus-visible {
+    outline: 3px solid var(--amber);
+    outline-offset: 4px;
+}
+
+.label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 3.2vw, 1.8rem);
+    text-align: center;
+}
+
+/* Icons */
+.icon {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
+    transition: transform 0.25s ease;
+}
+
+.icon-cards {
+    width: min(78%, 250px);
+}
+
+.icon-book {
+    width: min(62%, 170px);
+}
+
+.icon-pick {
+    width: min(34%, 100px);
+}
+
+/* Card fan */
+.icon-cards rect {
+    transform-box: view-box;
+    transform-origin: 120px 150px;
+    transition: transform 0.3s cubic-bezier(.25, 1, .5, 1);
+}
+
+.icon-cards .c1 { transform: rotate(-23deg); }
+.icon-cards .c2 { transform: rotate(-8deg); }
+.icon-cards .c3 { transform: rotate(7deg); }
+.icon-cards .c4 { transform: rotate(22deg); }
+
+.tile:hover .icon-cards .c1 { transform: rotate(-32deg); }
+.tile:hover .icon-cards .c2 { transform: rotate(-11deg); }
+.tile:hover .icon-cards .c3 { transform: rotate(10deg); }
+.tile:hover .icon-cards .c4 { transform: rotate(31deg); }
+
+/* Book and pickaxe */
+.tile:hover .icon-book {
+    transform: scale(1.06);
+}
+
+.tile:hover .icon-pick {
+    transform: rotate(-14deg);
+}
+
+/* Phones */
+@media (max-width: 640px) {
+    .login-btn {
+        right: 12px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    .menu {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+    }
+
+    .tile-main {
+        grid-row: auto;
+        min-height: 300px;
+    }
+
+    .tile {
+        min-height: 190px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tile,
+    .icon,
+    .icon-cards rect {
+        transition: none;
+    }
+
+    .tile:hover,
+    .tile:hover .icon-book,
+    .tile:hover .icon-pick {
+        transform: none;
+    }
+
+    .tile:hover .icon-cards .c1 { transform: rotate(-23deg); }
+    .tile:hover .icon-cards .c2 { transform: rotate(-8deg); }
+    .tile:hover .icon-cards .c3 { transform: rotate(7deg); }
+    .tile:hover .icon-cards .c4 { transform: rotate(22deg); }
+}
