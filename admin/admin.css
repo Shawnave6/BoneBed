@@ -44,6 +44,8 @@ body {
     line-height: 1.5;
 }
 
+[hidden] { display: none !important; }
+
 .sr-only {
     position: absolute;
     width: 1px;
@@ -56,16 +58,17 @@ body {
 
 /* HEADER */
 
-.site-header {
+header {
     display: flex;
     align-items: center;
     gap: 16px;
     padding: 18px 28px;
     background: var(--tar);
     color: var(--bone);
+    border-bottom: 5px solid var(--teal);
 }
 
-.site-header h1 {
+header h1 {
     flex: 1;
     margin: 0;
     font-family: var(--font-display);
@@ -84,19 +87,6 @@ body {
 }
 .back:hover { color: #f2bd68; text-decoration: underline; text-underline-offset: 3px; }
 
-/* STRATA: layers of rock under the header */
-.strata {
-    display: flex;
-    height: 10px;
-    background: var(--tar);
-}
-.strata i { display: block; height: 100%; }
-.strata i:nth-child(1) { flex: 5; background: var(--teal); }
-.strata i:nth-child(2) { flex: 2; background: var(--amber); }
-.strata i:nth-child(3) { flex: 4; background: var(--limestone-deep); }
-.strata i:nth-child(4) { flex: 1.5; background: var(--bone-deep); }
-.strata i:nth-child(5) { flex: 3; background: var(--tar-soft); }
-
 main {
     max-width: 1040px;
     margin: 0 auto;
@@ -112,7 +102,7 @@ main {
     box-shadow: var(--shadow);
 }
 
-.login-card {
+.card.narrow {
     max-width: 420px;
     margin: 48px auto;
     border-top: 4px solid var(--amber);
@@ -154,18 +144,25 @@ input:focus-visible, select:focus-visible {
     box-shadow: 0 0 0 3px rgba(44, 90, 85, 0.25);
 }
 
-.password-field { position: relative; }
-.password-field input { padding-right: 70px; }
-.password-field button {
+.password-row { position: relative; }
+.password-row input { padding-right: 70px; }
+.password-row button {
     position: absolute;
     top: 50%;
     right: 6px;
     transform: translateY(-50%);
+    padding: 5px 10px;
+    font-size: 0.85rem;
     color: var(--teal);
     border: 0;
     background: transparent;
 }
-.password-field button:hover { background: rgba(44, 90, 85, 0.1); color: var(--teal); }
+.password-row button:hover { background: rgba(44, 90, 85, 0.1); color: var(--teal); }
+
+#loginBtn {
+    width: 100%;
+    margin-top: 22px;
+}
 
 /* BUTTONS */
 
@@ -200,12 +197,9 @@ button.accent:hover { background: #ecb356; }
 button.danger { background: var(--danger); color: #fff; }
 button.danger:hover { background: var(--danger-lift); }
 
-button.small { padding: 5px 10px; font-size: 0.85rem; }
-button.wide { width: 100%; margin-top: 22px; }
-
 button[disabled] { opacity: 0.6; cursor: progress; }
 
-.site-header button.ghost { color: var(--bone); }
+header button.ghost { color: var(--bone); }
 
 /* STATUS */
 
@@ -216,20 +210,11 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 
 /* TOOLBAR */
 
-.panel-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 14px;
-}
-.count { margin: 0; color: var(--muted); font-size: 0.92rem; }
-
 .toolbar {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     padding: 12px;
     background: var(--bone);
     border-radius: var(--radius);
@@ -237,6 +222,10 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 }
 .toolbar input { flex: 1; min-width: 200px; width: auto; }
 #addBtn { margin-left: auto; }
+
+#count {
+    margin: 0 0 12px;
+}
 
 /* TABLE */
 
@@ -331,9 +320,8 @@ dialog h2 { margin-bottom: 8px; }
 /* SMALL SCREENS: rows become stacked cards */
 
 @media (max-width: 720px) {
-    .site-header { padding: 14px 16px; }
-    .site-header h1 { font-size: 1.2rem; }
-    .panel-head { flex-direction: column; align-items: flex-start; gap: 2px; }
+    header { padding: 14px 16px; }
+    header h1 { font-size: 1.2rem; }
     #addBtn { margin-left: 0; width: 100%; }
 
     table, tbody, tr, td { display: block; width: 100%; }
