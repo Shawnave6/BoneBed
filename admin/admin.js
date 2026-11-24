@@ -1,5 +1,5 @@
 const API_URL = "https://nave-dinobase-api-9a4p.vercel.app/api/v1";
-const KEY_STORE = "bonebedAdminKey";  
+const TOKEN_STORE = "bonebedAdminToken";  
 
 const PERIODS = ["Cambrian", "Ordovician", "Silurian", "Devonian", "Carboniferous", "Permian", "Triassic", "Jurassic", "Cretaceous", "Paleogene", "Neogene", "Quaternary"];
 const DIETS = ["Carnivore", "Herbivore", "Omnivore", "Piscivore", "Insectivore", "Filter Feeder"];
@@ -46,8 +46,8 @@ function setBusy(button, busy, busyText) {
 }
 
 // API HELPER
-function getKey() {
-    return sessionStorage.getItem(KEY_STORE) || "";
+function getToken() {
+    return sessionStorage.getItem(TOKEN_STORE) || "";
 }
 
 function describeError(body, status) {
@@ -58,13 +58,13 @@ function describeError(body, status) {
 }
 
 async function api(path, options = {}) {
-    const headers = { "x-api-key": getKey() };
+    const headers = { "x-admin-token": getToken() };
     if (options.body) headers["Content-Type"] = "application/json";
 
     const res = await fetch(API_URL + path, { ...options, headers });
 
     if (res.status === 401) {
-        logout("Your session was rejected. Please log in again.");
+        logout("Your session ended. Please log in again.");
         throw new Error("Unauthorized");
     }
     if (res.status === 204) return null;
@@ -77,18 +77,24 @@ async function api(path, options = {}) {
 // LOGIN / LOGOUT
 async function login(event) {
     event.preventDefault();
-    const key = $("keyInput").value.trim();
+    const password = $("keyInput").value;
     const button = $("loginBtn");
     setBusy(button, true, "Logging in...");
 
     try {
-        const res = await fetch(`${API_URL}/admin/check`, { headers: { "x-api-key": key } });
+        // the API checks the password and sends back a session token
+        const res = await fetch(`${API_URL}/admin/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password })
+        });
         if (!res.ok) {
-            showStatus("Incorrect admin key.", "error");
+            showStatus(res.status === 401 ? "Incorrect password." : "Login failed. Try again later.", "error");
             $("keyInput").select();
             return;
         }
-        sessionStorage.setItem(KEY_STORE, key);
+        const data = await res.json();
+        sessionStorage.setItem(TOKEN_STORE, data.token);
         $("keyInput").value = "";
         showStatus("", "");
         showPanel(true);
@@ -101,7 +107,7 @@ async function login(event) {
 }
 
 function logout(message) {
-    sessionStorage.removeItem(KEY_STORE);   // was TOKEN_STORE (undefined)
+    sessionStorage.removeItem(TOKEN_STORE);
     dinosaurs = [];
     $("rows").innerHTML = "";
     $("searchInput").value = "";
@@ -117,13 +123,13 @@ function showPanel(loggedIn) {
     if (!loggedIn) $("keyInput").focus();
 }
 
-function toggleKey() {
+function togglePassword() {
     const input = $("keyInput");
     const show = input.type === "password";
     input.type = show ? "text" : "password";
     $("togglePw").textContent = show ? "Hide" : "Show";
     $("togglePw").setAttribute("aria-pressed", String(show));
-    $("togglePw").setAttribute("aria-label", show ? "Hide key" : "Show key");
+    $("togglePw").setAttribute("aria-label", show ? "Hide password" : "Show password");
 }
 
 // READ
@@ -305,7 +311,7 @@ async function deleteDinosaur(dino) {
 // START
 buildForm();
 $("loginForm").addEventListener("submit", login);
-$("togglePw").addEventListener("click", toggleKey);
+$("togglePw").addEventListener("click", togglePassword);
 $("logoutBtn").addEventListener("click", () => logout(""));
 $("searchBtn").addEventListener("click", searchDinosaurs);
 $("showAllBtn").addEventListener("click", () => { $("searchInput").value = ""; loadDinosaurs(); });
@@ -321,7 +327,7 @@ $("formDialog").addEventListener("click", e => {
     if (outside) $("formDialog").close();
 });
 
-if (getKey()) {
+if (getToken()) {
     showPanel(true);
     loadDinosaurs();
 }
