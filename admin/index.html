@@ -22,9 +22,12 @@
             <h2>Admin login</h2>
             <p class="hint">Enter the admin password to manage dinosaur records.</p>
             <form id="loginForm">
-                <label for="passwordInput">Password</label>
-                <input type="password" id="passwordInput" autocomplete="off" required>
-                <button type="submit">Log in</button>
+                <label for="keyInput">Password</label>
+                <div class="password-row">
+                    <input type="password" id="keyInput" autocomplete="off" required>
+                    <button type="button" id="togglePw" class="ghost" aria-label="Show password" aria-pressed="false">Show</button>
+                </div>
+                <button type="submit" id="loginBtn">Log in</button>
             </form>
         </section>
 
@@ -56,7 +59,7 @@
             <div id="fields" class="fields"></div>
             <div class="actions">
                 <button type="button" id="cancelBtn" class="ghost">Cancel</button>
-                <button type="submit" class="accent">Save</button>
+                <button type="submit" id="saveBtn" class="accent">Save</button>
             </div>
         </form>
     </dialog>
